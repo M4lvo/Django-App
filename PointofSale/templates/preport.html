@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hardware House | Sales Report</title>
+    <style>
+        body {font-family: "Lato", sans-serif;}
+        h1{
+     background-color: #2175A7;
+     color: white;
+     padding: 10px 10px 10px 10px;
+     }
+    </style>
+</head>
+<body>
+    <h1>Select range</h1>
+        <form action="{% url 'PointofSale:greport' %}" method="get">
+            From:
+        <input type="date" name="From" min="{{daterange.0|date:'Y-m-d'}}" max="{{daterange.1|date:'Y-m-d'}}"value="{{daterange.0|date:'Y-m-d'}}">
+            Till:
+        <input type="date" name="Till" min="{{daterange.0|date:'Y-m-d'}}" max="{{daterange.1|date:'Y-m-d'}}"value="{{daterange.1|date:'Y-m-d'}}">
+        <br><br>
+        <input type="submit" value="Generate Report">
+    </form>
+</body>
+</html>

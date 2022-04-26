@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hardware House | Sales</title>
+    <style>
+    .div1{
+    float: right;
+    margin-right: 150px;
+    }
+
+    body {font-family: "Lato", sans-serif;}
+    table {
+    border-collapse: collapse;
+    width: 50%;
+    }
+
+    th, td {
+    text-align: left;
+    padding: 8px;
+    }
+
+    tr:nth-child(even){background-color: #f2f2f2}
+
+    th {
+    background-color: #2175A7;
+    color: white;
+    }
+    h2{
+     background-color: #2175A7;
+     color: white;
+     padding: 10px 10px 10px 10px;
+     }
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart(){
+    var data = new google.visualization.DataTable();
+    data.addColumn('string','Product');
+    data.addColumn('number', 'Units Sold');
+    data.addRows([
+    {% for key, value in s_units.items %}
+    ['{{ key.Name }}',{{ value.Total_Units }}],
+    {% endfor %}
+    ]);
+
+    var options = {'title':'How many units have been sold?',
+                   'width':500,
+                   'height':300};
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+    }
+    </script>
+</head>
+<body>
+    {% if all_Sales %}
+    {% load mathfilters %}
+        <h2>Sales</h2>
+        <table>
+        <tr>
+            <th>Sale-ID</th>
+            <th>Product Name</th>
+            <th>Date - Time</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total Price</th>
+        </tr>
+            {% for key, value in all_Sales.items %}
+            <tr>
+                <td>{{ key.id }}</td>
+                {% if key.product %}
+                <td>{{ key.product.Name }}</td>
+                {% else %}
+                <td>Deleted_Product</td>
+                {% endif %}
+                <td>{{ key.Date|date:"d / m / Y" }}  {{ key.Date|time:"H:i:s" }}</td>
+                <td>{{ key.Quantity }}</td>
+                <td>{{ value.Total_Cost|div:key.Quantity }}</td>
+                <td>{{ value.Total_Cost }}</td>
+            </tr>
+            {% endfor %}
+            <div class="div1" id="chart_div"></div>
+        </table>
+    {% else %}
+        <h3>There are no sales.</h3>
+    {% endif %}
+</body>
+</html>

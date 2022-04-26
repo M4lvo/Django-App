@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {font-family: "Lato", sans-serif;}
+        h1{
+     background-color: #2175A7;
+     color: white;
+     padding: 10px 10px 10px 10px;
+     }
+    </style>
+    <title>Hardware House | New Product</title>
+</head>
+<body>
+    <h1>New Product Form</h1>
+    <form action="{% url 'PointofSale:addproduct' %}" method="post">
+        {% csrf_token %}
+        Product Name:
+        <input type="text" name="Product_Name">
+        Cost:
+        <input type="number" step="0.01" name="Cost">
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

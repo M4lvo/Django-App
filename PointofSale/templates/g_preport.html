@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hardware House | Sales Report</title>
+    <style>
+    body {font-family: "Lato", sans-serif;}
+    table {
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    table.center {
+    margin-left:auto;
+    margin-right:auto;
+    }
+
+    th, td {
+    text-align: left;
+    padding: 8px;
+    }
+
+    tr:nth-child(even){background-color: #f2f2f2}
+
+    th {
+    background-color: #2175A7;
+    color: white;
+    }
+    th#h01{
+    text-align: right;
+    }
+    {% if Total_PS.hol %}
+    mark#m01 {
+    background-color: #8DF19C;
+    color: black;
+    }
+    {% else %}
+    mark#m01 {
+    background-color: #F1A190;
+    color: black;
+    }
+    {% endif %}
+    div {
+    margin-right: 100px;
+    }
+    .button {
+    background-color: #2175A7;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    display: inline-block;
+}
+h2{
+     background-color: #2175A7;
+     color: white;
+     padding: 10px 10px 10px 10px;
+     }
+    </style>
+</head>
+<body>
+    {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+    {% else %}
+    <h2>Generated Point of Sale Report from {{ Dates.from|date:"d / m / Y" }} till {{ Dates.before|date:"d / m / Y" }}</h2>
+    <form action="{% url 'PointofSale:export_POS_excel' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="From" value="{{ request.GET.From }}">
+        <input type="hidden" name="Till" value="{{ request.GET.Till }}">
+        <input class="button" type="submit" value="Excel Report" >
+    </form>
+    <h3 align="center">Sales</h3>
+    <table class="center">
+        <tr>
+            <th>S-ID</th>
+            <th>Product-ID</th>
+            <th>Product-Name</th>
+            <th>Date - Time</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+        {% for key, value in SALES.items %}
+        <tr>
+            <td>{{ key.id }}</td>
+            <td>{{ key.product.id }}</td>
+            <td>{{ key.product.Name }}</td>
+            <td>{{ key.Date|date:"d / m / Y" }}  {{ key.Date|time:"H:i:s" }}</td>
+            <td>{{ key.Quantity }}</td>
+            <td>{{ value.Total_Cost }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th id="h01">Total Income:</th>
+            <td>{{ Total_PS.Total_S }}</td>
+        </tr>
+    </table>
+    <h3 align="center">Purchases</h3>
+    <table class="center">
+        <tr>
+            <th>P-ID</th>
+            <th>Product-ID</th>
+            <th>Product-Name</th>
+            <th>Date - Time</th>
+            <th>Quantity</th>
+            <th>Cost</th>
+        </tr>
+        {% for key, value in PURCHASES.items %}
+        <tr>
+            <td>{{ key.id }}</td>
+            <td>{{ key.product.id }}</td>
+            <td>{{ key.product.Name }}</td>
+            <td>{{ key.Date|date:"d / m / Y" }}  {{ key.Date|time:"H:i:s" }}</td>
+            <td>{{ key.Quantity }}</td>
+            <td>{{ value.Total_Cost }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th id="h01">Total Expenses:</th>
+            <td>{{ Total_PS.Total_P }}</td>
+        </tr>
+    </table>
+
+
+
+    <div>
+        <h3 align="right" >Difference: <mark id="m01">{{ Total_PS.diff }}</mark></h3>
+    </div>
+    {% endif %}
+</body>
+</html>

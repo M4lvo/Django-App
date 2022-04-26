@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    body {font-family: "Lato", sans-serif;}
+    .btn {
+     border: 2px solid black;
+     background-color: white;
+     color: black;
+     padding: 14px 28px;
+     font-size: 16px;
+     cursor: pointer;
+     }
+
+    .button {
+     border-color: #2175A7;
+     color: #2175A7;
+     }
+
+    .button:hover {
+     background-color: #2175A7;
+     color: white;
+     }
+
+     h1{
+     background-color: #2175A7;
+     color: white;
+     padding: 10px 10px 10px 10px;
+     }
+    </style>
+    <title>Hardware House | Menu</title>
+</head>
+<body>
+    <h1>Hardware House</h1>
+    <button type="button" class="btn button" onclick= "location.href='{% url 'PointofSale:product' %}'">New Product</button>
+    <button type="button" class="btn button" onclick= "location.href='{% url 'PointofSale:transaction' %}'">New Transaction</button>
+    <button type="button" class="btn button" onclick= "location.href='{% url 'PointofSale:purchase' %}'">Purchases</button>
+    <button type="button" class="btn button" onclick= "location.href='{% url 'PointofSale:sale' %}'">Sales</button>
+    <button type="button" class="btn button" onclick= "location.href='{% url 'PointofSale:ireport' %}'">Inventory Report</button>
+    <button type="button" class="btn button" onclick= "location.href='{% url 'PointofSale:preport' %}'">Point of Sale Report</button>
+    {% if message %}
+    <br>
+    <h2>{{ message }}</h2>
+    {% endif %}
+
+</body>
+</html>
